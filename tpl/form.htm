@@ -1,0 +1,85 @@
+[% WRAPPER 'layout.htm' %]
+
+<style>
+	.img-captcha { 
+		width: [% captcha_width %]px;
+		height: [% captcha_height %]px;
+		display:inline-block;
+	}
+</style>
+
+		<h2 class="page-header">Just enter the capture</h1>
+		<form name="searchform" id="searchform" method="post" action="/cgi-bin/form.pl" onsubmit="return check_form(this);">
+
+			<div class="col-md-6 col-md-offset-3">
+				<img id="img-captcha" class="img-captcha" src="/cgi-bin/captcha.pl?rfr=[% time %]" data-src="/cgi-bin/captcha.pl">
+				<div class="btn btn-default refresh-captcha" onclick="refresh_captcha()">&#128472; Refresh</div>
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col-md-6 col-md-offset-3">
+				<div class="form-group has-feedback">	
+					<label class="required" for="inputсaptcha">Enter Captcha *</label>
+					<input class="form-control" id="inputсaptcha" type="text" name="сaptcha" maxlength="[% captcha_length %]" value="">
+					<span class="form-control-feedback fas"></span>
+					<span class="help-block"></span>
+				</div>	
+			</div>
+			<div class="clearfix"></div>
+
+			<div class="col-md-6 col-md-offset-3">
+				<br /><input class="btn btn-success" style="margin-left: 50px;" type="submit" value="Send" />
+			</div>
+			<div class="clearfix"></div>
+
+		</form>
+
+<script type="text/javascript">
+var tt_show = 1;
+var scrollto = ''; // Метка для прокрутки страницы 
+
+function set_input_error(act,inp,mess) {
+	var formGroup = inp.parents('.form-group');
+	var glyphicon = formGroup.find('.form-control-feedback');
+	var helpBlock = formGroup.find('.help-block');
+	if (act) {
+		formGroup.addClass('has-error').removeClass('has-success');
+		glyphicon.addClass('fa-times').removeClass('fa-check');
+		helpBlock.html(mess);
+		if (! scrollto ) { scrollto = inp} 
+	} else {
+		formGroup.addClass('has-success').removeClass('has-error');
+		glyphicon.addClass('fa-check').removeClass('fa-times');
+		helpBlock.html('');
+	}
+}
+function check_form(form) {
+	var formValid = true;
+	var tt_show = 1;
+	
+	regexp = /^[0-9a-z]{[% captcha_length %]}$/gi;
+	fvl = $('#inputсaptcha').val();
+	if (! fvl ) { 
+		set_input_error (1,$('#inputсaptcha'),'You have not filled in the required field.');
+        formValid = false;
+	} else if (! regexp.test(fvl)) { 
+		set_input_error (1,$('#inputсaptcha'),'Wrong code');
+        formValid = false;
+	} else {
+		set_input_error (0,$('#inputсaptcha'),'');
+	}
+	
+	if (! formValid && scrollto)
+	{
+		$('html, body').animate({scrollTop: scrollto.offset().top-30}, 200);
+	}
+
+	return formValid;
+}
+
+function refresh_captcha() {
+	document.getElementById('img-captcha').src='/cgi-bin/captcha.pl?rfr='+(new Date()).getTime();
+}
+</script>
+
+[% END %]
