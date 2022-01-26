@@ -1,0 +1,5 @@
+[% WRAPPER 'layout.htm' %]
+<h2 class="page-header">Result</h1>
+<div class="alert [% IF result == '1' %]alert-success[% ELSE %]alert-danger[% END %]" role="alert">[% message %]<br /><br />
+<div class="text-center"><a class="btn btn-success" href="/cgi-bin/form.pl" role="button">New form</a></div><br /><br />
+[% END %]
