@@ -5,20 +5,20 @@ BEGIN {
 use strict;
 use warnings;
 use lib qw( ../lib );
-use Controller::Captcha;
+use App::Controller::Captcha;
 use Data::Dumper;
-use Helper::Config;
-use Helper::Logger;
+use App::Helper::Config;
+use App::Helper::Logger;
 
-my $logger = Helper::Logger->new();
+my $logger = App::Helper::Logger->new();
 
 # Получаем конфигурацию
-my %config = Helper::Config->new(
+my %config = App::Helper::Config->new(
     config_file => '../conf/capture.cfg',
     logger      => $logger
 )->get();
 
-my $web = Controller::Captcha->new(
+my $web = App::Controller::Captcha->new(
     config => \%config,
     logger => $logger,
 );

@@ -1,7 +1,7 @@
-package Controller::Captcha;
+package App::Controller::Captcha;
 use strict;
 use warnings;
-use parent 'BaseObject';
+use parent 'App::Base';
 use Data::Dumper;
 
 sub new {
@@ -71,7 +71,7 @@ sub _render_image {
     my $self  = shift;
     my $image = shift;
 
-    $self->_helper->print_header('image/png');
+    $self->_helper->print_header( type => 'image/png' );
     binmode STDOUT;
     print $image;
 }
@@ -82,17 +82,17 @@ __END__
 
 =head1 NAME
 
-Controller::Captcha - Контроллер вывода страницы в браузер
+App::Controller::Captcha - Контроллер вывода страницы в браузер
 
 =head1 SYNOPSIS
 
-use Controller::Captcha;
-my $web = Controller::Captcha->new( config => hash, logger => object );
+use App::Controller::Captcha;
+my $web = App::Controller::Captcha->new( config => hash, logger => object );
 $web->process();
 
 =head1 METHODS
 
-=item my $web = Controller::Captcha->new( %parameters );
+=item my $web = App::Controller::Captcha->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 config  Хэш с конфигурацией приложения

@@ -1,7 +1,7 @@
-package Helper::Config;
+package App::Helper::Config;
 use strict;
 use warnings;
-use parent 'BaseObject';
+use parent 'App::Base';
 use Config::Simple;
 
 sub new {
@@ -47,17 +47,17 @@ __END__
 
 =head1 NAME
 
-Helper::Config - Получение конфигурации приложения
+App::Helper::Config - Получение конфигурации приложения
 
 =head1 SYNOPSIS
 
-use Helper::Config;
-my $cfg = Helper::Config->new( config_file => string, logger => object );
+use App::Helper::Config;
+my $cfg = App::Helper::Config->new( config_file => string, logger => object );
 my %config = $cfg->get();
 
 =head1 METHODS
 
-=item my $cfg = Helper::Config->new( %parameters );
+=item my $cfg = App::Helper::Config->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 config_file  Файл с конфигурацией

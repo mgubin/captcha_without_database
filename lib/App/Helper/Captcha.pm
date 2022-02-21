@@ -1,7 +1,7 @@
-package Helper::Captcha;
+package App::Helper::Captcha;
 use strict;
 use warnings;
-use parent 'BaseObject';
+use parent 'App::Base';
 use GD;
 use Digest::MD5 qw(md5_hex);
 use Data::Dumper;
@@ -96,12 +96,12 @@ __END__
 
 =head1 NAME
 
-Helper::CGI - Работа с CGI
+App::Helper::CGI - Работа с CGI
 
 =head1 SYNOPSIS
 
-use Helper::CGI;
-my $cgi = Helper::CGI->new( logger => object );
+use App::Helper::CGI;
+my $cgi = App::Helper::CGI->new( logger => object );
 $cgi->is_method_get();
 $cgi->is_method_post();
 my $param = $cgi->param('param_name');
@@ -110,7 +110,7 @@ $cgi->return_status('status');
 
 =head1 METHODS
 
-=item my $cgi = Helper::CGI->new( %parameters );
+=item my $cgi = App::Helper::CGI->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 logger Объект логгера
