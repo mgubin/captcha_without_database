@@ -1,7 +1,7 @@
-package Helper::CGI;
+package App::Helper::CGI;
 use strict;
 use warnings;
-use parent 'BaseObject';
+use parent 'App::Base';
 use CGI qw[ :cgi ];
 use Data::Dumper;
 
@@ -108,12 +108,12 @@ __END__
 
 =head1 NAME
 
-Helper::CGI - Работа с CGI
+App::Helper::CGI - Работа с CGI
 
 =head1 SYNOPSIS
 
-use Helper::CGI;
-my $cgi = Helper::CGI->new( logger => object );
+use App::Helper::CGI;
+my $cgi = App::Helper::CGI->new( logger => object );
 $cgi->is_method_get();
 $cgi->is_method_post();
 my $value = $cgi->value('param_name');
@@ -122,7 +122,7 @@ $cgi->return_status('status');
 
 =head1 METHODS
 
-=item my $cgi = Helper::CGI->new( %parameters );
+=item my $cgi = App::Helper::CGI->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 logger Объект логгера

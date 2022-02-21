@@ -1,4 +1,4 @@
-package Helper::Logger;
+package App::Helper::Logger;
 use strict;
 use warnings;
 
@@ -19,12 +19,12 @@ __END__
 
 =head1 NAME
 
-Helper::Logger - the simplest logger for unifying the log of messages
+App::Helper::Logger - the simplest logger for unifying the log of messages
 
 =head1 SYNOPSIS
 
-use Helper::Logger;
-$logger = Helper::Logger->new();
+use App::Helper::Logger;
+$logger = App::Helper::Logger->new();
 $logger->info('Some message');
 
 =cut

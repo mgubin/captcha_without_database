@@ -1,10 +1,10 @@
-package BaseObject;
+package App::Base;
 use strict;
 use warnings;
 use Getopt::Long;
 use Data::Dumper;
-use Helper::CGI;
-use Helper::Captcha;
+use App::Helper::CGI;
+use App::Helper::Captcha;
 
 sub new {
     my $class  = shift;
@@ -41,7 +41,7 @@ sub _helper {
     my $self = shift;
 
     unless ( $self->{_helper} ) {
-        $self->{_helper} = Helper::CGI->new( logger => $self->_get('logger') );
+        $self->{_helper} = App::Helper::CGI->new( logger => $self->_get('logger') );
     }
 
     return $self->{_helper};
@@ -51,7 +51,7 @@ sub _captcha {
     my $self = shift;
 
     unless ( $self->{_captcha} ) {
-        $self->{_captcha} = Helper::Captcha->new(
+        $self->{_captcha} = App::Helper::Captcha->new(
             config => $self->_config,
             logger => $self->_get('logger'),
         );
@@ -83,16 +83,16 @@ __END__
 
 =head1 NAME
 
-BaseObject - Базовый класс с общими для других модулей внутренними функциями
+App::Base - Базовый класс с общими для других модулей внутренними функциями
 
 =head1 SYNOPSIS
 
-use BaseObject;
-my $cfg = BaseObject->new( );
+use App::Base;
+my $cfg = App::Base->new( );
 
 =head1 METHODS
 
-=item my $cfg = BaseObject->new();
+=item my $cfg = App::Base->new();
 
 Конструктор объекта.
 
