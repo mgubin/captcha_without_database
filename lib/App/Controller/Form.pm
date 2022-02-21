@@ -33,12 +33,12 @@ sub new {
 sub process {
     my $self = shift;
 
-    if ( $self->_helper->is_method_get() ) {
+    if ( $self->_web->is_method_get() ) {
         $self->_render_form();
-    } elsif ( $self->_helper->is_method_post() ) {
+    } elsif ( $self->_web->is_method_post() ) {
         $self->_render_post_result();
     } else {
-        $self->_helper->return_status('405 Method Not Allowed');
+        $self->_web->return_status('405 Method Not Allowed');
     }
 
     return 1;
@@ -72,8 +72,8 @@ sub _render_form {
 sub _render_post_result {
     my $self = shift;
 
-    my $captcha = $self->_helper->value('сaptcha');
-    my $hash    = $self->_helper->get_cookie( $self->_config->{captcha}{cookie} );
+    my $captcha = $self->_web->value('сaptcha');
+    my $hash    = $self->_web->get_cookie( $self->_config->{captcha}{cookie} );
 
     my $data =
         $self->_check_captcha( $captcha, $hash )
@@ -100,10 +100,10 @@ sub _render_page {
     my $template_file = "$params{template}." . $self->_get('_template_ext');
 
     unless ( $self->_template->process( $template_file, $params{data}, \$output ) ) {
-        $self->_helper->return_status( '500 ' . $self->_template->error() );
+        $self->_web->return_status( '500 ' . $self->_template->error() );
     }
 
-    $self->_helper->print_header();
+    $self->_web->print_header();
     print $output;
 }
 

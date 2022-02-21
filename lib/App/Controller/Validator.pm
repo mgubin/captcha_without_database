@@ -38,7 +38,7 @@ sub _get_code {
     my $self = shift;
 
     my $length = $self->_config->{captcha}{code_lenght};
-    $self->_helper->return_status('500 Internal error') unless $length && $length =~ /^\d+$/;
+    $self->_web->return_status('500 Internal error') unless $length && $length =~ /^\d+$/;
 
     my @chars = ( '0' .. '9', 'a' .. 'z' );
     my $code;
@@ -61,7 +61,7 @@ sub _set_cookies {
 
     my $hash = $self->_captcha->get_hash($code);
     $self->_log("Got hash: $hash");
-    $self->_helper->set_cookie(
+    $self->_web->set_cookie(
         name  => $self->_config->{captcha}{cookie},
         value => $hash,
     );
@@ -71,7 +71,7 @@ sub _render_image {
     my $self  = shift;
     my $image = shift;
 
-    $self->_helper->print_header( type => 'image/png' );
+    $self->_web->print_header( type => 'image/png' );
     binmode STDOUT;
     print $image;
 }

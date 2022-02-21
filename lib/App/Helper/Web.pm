@@ -4,7 +4,6 @@ use warnings;
 use parent 'App::Base';
 use CGI qw[ :cgi ];
 use Carp;
-use App::Helper::Exception;
 use Data::Dumper;
 
 sub new {

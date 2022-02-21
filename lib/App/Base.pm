@@ -37,14 +37,14 @@ sub _config {
     return shift->_get('config');
 }
 
-sub _helper {
+sub _web {
     my $self = shift;
 
-    unless ( $self->{_helper} ) {
-        $self->{_helper} = App::Helper::Web->new( logger => $self->_get('logger') );
+    unless ( $self->{_web} ) {
+        $self->{_web} = App::Helper::Web->new( logger => $self->_get('logger') );
     }
 
-    return $self->{_helper};
+    return $self->{_web};
 }
 
 sub _captcha {
