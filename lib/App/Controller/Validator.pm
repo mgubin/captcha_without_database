@@ -1,4 +1,4 @@
-package App::Controller::Captcha;
+package App::Controller::Validator;
 use strict;
 use warnings;
 use parent 'App::Base';
@@ -82,17 +82,17 @@ __END__
 
 =head1 NAME
 
-App::Controller::Captcha - Контроллер вывода страницы в браузер
+App::Controller::Validator - Контроллер вывода страницы в браузер
 
 =head1 SYNOPSIS
 
-use App::Controller::Captcha;
-my $web = App::Controller::Captcha->new( config => hash, logger => object );
+use App::Controller::Validator;
+my $web = App::Controller::Validator->new( config => hash, logger => object );
 $web->process();
 
 =head1 METHODS
 
-=item my $web = App::Controller::Captcha->new( %parameters );
+=item my $web = App::Controller::Validator->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 config  Хэш с конфигурацией приложения

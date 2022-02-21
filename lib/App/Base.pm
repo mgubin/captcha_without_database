@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Getopt::Long;
 use Data::Dumper;
-use App::Helper::CGI;
+use App::Helper::Web;
 use App::Helper::Captcha;
 
 sub new {
@@ -41,7 +41,7 @@ sub _helper {
     my $self = shift;
 
     unless ( $self->{_helper} ) {
-        $self->{_helper} = App::Helper::CGI->new( logger => $self->_get('logger') );
+        $self->{_helper} = App::Helper::Web->new( logger => $self->_get('logger') );
     }
 
     return $self->{_helper};

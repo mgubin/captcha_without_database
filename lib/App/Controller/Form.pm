@@ -1,10 +1,10 @@
-package App::Controller::Web;
+package App::Controller::Form;
 use strict;
 use warnings;
 use parent 'App::Base';
 use Data::Dumper;
 use Template;
-use App::Helper::CGI;
+use App::Helper::Web;
 
 sub new {
     my $class  = shift;
@@ -48,7 +48,7 @@ sub _helper {
     my $self = shift;
 
     unless ( $self->{_helper} ) {
-        $self->{_helper} = App::Helper::CGI->new( logger => $self->_get('logger') );
+        $self->{_helper} = App::Helper::Web->new( logger => $self->_get('logger') );
     }
 
     return $self->{_helper};
@@ -129,17 +129,17 @@ __END__
 
 =head1 NAME
 
-App::Controller::Web - Контроллер вывода страницы в браузер
+App::Controller::Form - Контроллер вывода страницы в браузер
 
 =head1 SYNOPSIS
 
-use App::Controller::Web;
-my $web = App::Controller::Web->new( config => hash, logger => object );
+use App::Controller::Form;
+my $web = App::Controller::Form->new( config => hash, logger => object );
 $web->process();
 
 =head1 METHODS
 
-=item my $web = App::Controller::Web->new( %parameters );
+=item my $web = App::Controller::Form->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 config  Хэш с конфигурацией приложения
