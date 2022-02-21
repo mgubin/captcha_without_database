@@ -72,7 +72,7 @@ sub return_status {
         status => $status
     );
 
-    croak( App::Helper::Exception->new( message => $log_message ) );
+    croak($log_message);
 }
 
 sub set_cookie {

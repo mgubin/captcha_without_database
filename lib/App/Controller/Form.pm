@@ -44,16 +44,6 @@ sub process {
     return 1;
 }
 
-sub _helper {
-    my $self = shift;
-
-    unless ( $self->{_helper} ) {
-        $self->{_helper} = App::Helper::Web->new( logger => $self->_get('logger') );
-    }
-
-    return $self->{_helper};
-}
-
 sub _template {
     my $self = shift;
 
