@@ -71,7 +71,7 @@ sub _render_image {
     my $self  = shift;
     my $image = shift;
 
-    $self->_helper->print_header('image/png');
+    $self->_helper->print_header( type => 'image/png' );
     binmode STDOUT;
     print $image;
 }
