@@ -96,12 +96,12 @@ __END__
 
 =head1 NAME
 
-App::Helper::CGI - Работа с CGI
+App::Helper::Web - Работа с CGI
 
 =head1 SYNOPSIS
 
-use App::Helper::CGI;
-my $cgi = App::Helper::CGI->new( logger => object );
+use App::Helper::Web;
+my $cgi = App::Helper::Web->new( logger => object );
 $cgi->is_method_get();
 $cgi->is_method_post();
 my $param = $cgi->param('param_name');
@@ -110,7 +110,7 @@ $cgi->return_status('status');
 
 =head1 METHODS
 
-=item my $cgi = App::Helper::CGI->new( %parameters );
+=item my $cgi = App::Helper::Web->new( %parameters );
 
 Конструктор объекта. В качестве входным должен получить следующие параметры:
 logger Объект логгера

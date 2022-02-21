@@ -5,7 +5,7 @@ BEGIN {
 use strict;
 use warnings;
 use lib qw( ../lib );
-use App::Controller::Captcha;
+use App::Controller::Validator;
 use Data::Dumper;
 use App::Helper::Config;
 use App::Helper::Logger;
@@ -18,7 +18,7 @@ my %config = App::Helper::Config->new(
     logger      => $logger
 )->get();
 
-my $web = App::Controller::Captcha->new(
+my $web = App::Controller::Validator->new(
     config => \%config,
     logger => $logger,
 );

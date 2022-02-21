@@ -5,7 +5,7 @@ BEGIN {
 use strict;
 use warnings;
 use lib qw( ../lib );
-use App::Controller::Web;
+use App::Controller::Form;
 use Data::Dumper;
 use App::Helper::Config;
 use App::Helper::Logger;
@@ -18,7 +18,7 @@ my %config = App::Helper::Config->new(
     logger      => $logger
 )->get();
 
-my $web = App::Controller::Web->new(
+my $web = App::Controller::Form->new(
     config => \%config,
     logger => $logger,
 );
