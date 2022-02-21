@@ -3,6 +3,8 @@ use strict;
 use warnings;
 use parent 'App::Base';
 use CGI qw[ :cgi ];
+use Carp;
+use App::Helper::Exception;
 use Data::Dumper;
 
 sub new {
@@ -10,7 +12,13 @@ sub new {
     my %params = @_;
 
     my $self = $class->SUPER::new(
-        logger => undef,
+        logger          => undef,
+        default_headers => {
+            type   => 'text/html',
+            status => '200 OK',
+        },
+        default_fauilt_status => '500 Internal error',
+
         %params,
     );
 
@@ -36,14 +44,15 @@ sub value {
 }
 
 sub print_header {
-    my $self = shift;
-    my $type = shift || 'text/html';
+    my $self   = shift;
+    my %params = @_;
 
-    my %headers = (
-        -type          => $type,
-        -cache_control => 'no-cache',
-    );
-    $headers{-charset} = 'utf-8' if $type =~ /^text\//;
+    my %headers = ( -cache_control => 'no-cache, no-store, must-revalidate', );
+
+    my $default_headers = $self->_get('default_headers');
+    $headers{"-$_"} = $params{$_} || $default_headers->{$_} foreach keys %$default_headers;
+
+    $headers{-charset} = 'utf-8' if $headers{'-type'} =~ /^text\//;
     my $cookie = $self->_get('cookie');
     $headers{-cookie} = $cookie if $cookie;
 
@@ -51,17 +60,19 @@ sub print_header {
 }
 
 sub return_status {
-    my $self   = shift;
-    my $status = shift;
+    my $self    = shift;
+    my $status  = shift || $self->_get('default_fauilt_status');
+    my $message = shift;
 
-    return unless $status;
+    my $log_message = $status;
+    $log_message .= ": $message" if $message;
 
-    print $self->_cgi->header(
-        -type   => 'text/plain',
-        -status => $status
+    $self->print_header(
+        type   => 'text/html',
+        status => $status
     );
 
-    exit;
+    croak( App::Helper::Exception->new( message => $log_message ) );
 }
 
 sub set_cookie {
