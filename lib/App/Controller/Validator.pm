@@ -26,10 +26,27 @@ sub new {
 sub process {
     my $self = shift;
 
-    my $code  = $self->_get_code();
-    my $image = $self->_get_image($code);
-    $self->_set_cookies($code);
-    $self->_render_image($image);
+    my $mode = $self->_web->value('mode');
+
+    if ( $mode eq 'get' ) {
+        # Return image with captcha
+        my $code  = $self->_get_code();
+        my $image = $self->_get_image($code);
+        $self->_set_cookies($code);
+        $self->_web->output_image($image);
+    } elsif ( $mode eq 'check' ) {
+        # Checking the captcha before submitting the form
+        my $code = $self->_web->value('code');
+        $self->_log("Check captcha: got code $code");
+        my $cookie_hash = $self->_web->get_cookie( $self->_config->{captcha}{cookie} );
+        $self->_log("Check captcha: hash from cookie $cookie_hash");
+        my $res = $self->_captcha->is_valid( $code, $cookie_hash ) ? 1 : 0;
+        $self->_log('Check captcha: captcha in not valid') unless $res;
+        $self->_web->output_text($res);
+    } else {
+        # Unknown request
+        $self->_web->return_status('400 Bad Request');
+    }
 
     return 1;
 }
@@ -65,15 +82,6 @@ sub _set_cookies {
         name  => $self->_config->{captcha}{cookie},
         value => $hash,
     );
-}
-
-sub _render_image {
-    my $self  = shift;
-    my $image = shift;
-
-    $self->_web->print_header( type => 'image/png' );
-    binmode STDOUT;
-    print $image;
 }
 
 1;

@@ -102,6 +102,25 @@ sub get_cookie {
     return $cookie_value;
 }
 
+sub output_image
+{
+	my $self  = shift;
+	my $image = shift;
+
+	$self->print_header(type => 'image/png');
+	binmode STDOUT;
+	print $image;
+}
+
+sub output_text
+{
+	my $self = shift;
+	my $text = shift;
+
+	$self->print_header(type => 'text/plain');
+	print $text;
+}
+
 sub _cgi {
     my $self = shift;
 

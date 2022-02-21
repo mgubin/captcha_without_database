@@ -61,10 +61,11 @@ sub _render_form {
     $self->_render_page(
         template => $self->_get('_template_content')->{get},
         data     => {
-            captcha_width  => $config->{captcha}{width},
-            captcha_height => $config->{captcha}{height},
-            captcha_length => $config->{captcha}{code_lenght},
-            time           => time,
+            captcha_width    => $config->{captcha}{width},
+            captcha_height   => $config->{captcha}{height},
+            captcha_length   => $config->{captcha}{code_lenght},
+            captcha_precheck => $config->{captcha}{precheck},
+            time             => time,
         },
     );
 }
@@ -73,7 +74,10 @@ sub _render_post_result {
     my $self = shift;
 
     my $captcha = $self->_web->value('сaptcha');
-    my $hash    = $self->_web->get_cookie( $self->_config->{captcha}{cookie} );
+    $self->_log("Check captcha: got code $captcha");
+    my $hash        = $self->_web->get_cookie( $self->_config->{captcha}{cookie} );
+    my $cookie_hash = $self->_web->get_cookie( $self->_config->{captcha}{cookie} );
+    $self->_log("Check captcha: hash from cookie $cookie_hash");
 
     my $data =
         $self->_check_captcha( $captcha, $hash )
@@ -86,6 +90,7 @@ sub _render_post_result {
             message => 'Capture is wrong',
         };
 
+    $self->_log("Check captcha result: $data->{message}");
     $self->_render_page(
         template => $self->_get('_template_content')->{post},
         data     => $data,
@@ -110,7 +115,7 @@ sub _render_page {
 sub _check_captcha {
     my ( $self, $captcha, $hash ) = @_;
 
-    return $self->_captcha->check( $captcha, $hash );
+    return $self->_captcha->is_valid( $captcha, $hash );
 }
 
 1;

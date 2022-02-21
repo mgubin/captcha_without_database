@@ -12,7 +12,7 @@
 		<form name="searchform" id="searchform" method="post" action="/cgi-bin/form.pl" onsubmit="return check_form(this);">
 
 			<div class="col-md-6 col-md-offset-3">
-				<img id="img-captcha" class="img-captcha" src="/cgi-bin/captcha.pl?rfr=[% time %]" data-src="/cgi-bin/captcha.pl">
+				<img id="img-captcha" class="img-captcha" src="/cgi-bin/captcha.pl?mode=get&t=[% time %]" data-src="/cgi-bin/captcha.pl">
 				<div class="btn btn-default refresh-captcha" onclick="refresh_captcha()">&#128260; Refresh</div>
 			</div>
 			<div class="clearfix"></div>
@@ -35,8 +35,9 @@
 		</form>
 
 <script type="text/javascript">
+var capture_precheck = [% captcha_precheck %]; // 1 if check capture before form submitting
 var tt_show = 1;
-var scrollto = ''; // Метка для прокрутки страницы 
+var scrollto = ''; // scroll on error to this mark 
 
 function set_input_error(act,inp,mess) {
 	var formGroup = inp.parents('.form-group');
@@ -57,12 +58,11 @@ function check_form(form) {
 	var formValid = true;
 	var tt_show = 1;
 	
-	regexp = /^[0-9a-z]{[% captcha_length %]}$/gi;
 	fvl = $('#inputсaptcha').val();
 	if (! fvl ) { 
 		set_input_error (1,$('#inputсaptcha'),'You have not filled in the required field.');
         formValid = false;
-	} else if (! regexp.test(fvl)) { 
+	} else if (! validate_captcha(fvl)) { 
 		set_input_error (1,$('#inputсaptcha'),'Wrong code');
         formValid = false;
 	} else {
@@ -77,8 +77,48 @@ function check_form(form) {
 	return formValid;
 }
 
+function validate_captcha(captcha)
+{
+	var regexp = /^[0-9a-z]{[% captcha_length %]}$/gi;
+	if (! regexp.test(captcha))
+	{
+		return 0;
+	}
+	
+	if (! capture_precheck)
+	{
+		return 1;
+	}
+
+	var res = 0;
+	var url = '/cgi-bin/captcha.pl';
+	var invocation = new XMLHttpRequest();
+	var xhr = new XMLHttpRequest();
+	xhr.open("GET", url + "?mode=check&code=" + captcha + '&t=' + (new Date()).getTime(), false);
+	xhr.onreadystatechange = function(){
+		if ( xhr.readyState == 4 )
+		{
+			if ( xhr.status == 200 )
+			{
+				res = get_res(xhr.responseText);
+			}
+		}
+	};
+	xhr.send(null);
+	return res;
+}
+
+function get_res(response)
+{
+	if (response == 1)
+	{
+		return 1;
+	}
+	return 0;
+}
+
 function refresh_captcha() {
-	document.getElementById('img-captcha').src='/cgi-bin/captcha.pl?rfr='+(new Date()).getTime();
+	document.getElementById('img-captcha').src='/cgi-bin/captcha.pl?mode=get&t='+(new Date()).getTime();
 }
 </script>
 

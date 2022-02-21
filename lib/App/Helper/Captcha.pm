@@ -80,7 +80,7 @@ sub get_hash {
     return md5_hex($code);
 }
 
-sub check {
+sub is_valid {
     my ( $self, $captcha, $cookie_hash ) = @_;
 
     return unless $captcha && $cookie_hash;
